@@ -10,6 +10,7 @@ import com.vaidik.ragbackend.entity.DocumentTypes;
 import com.vaidik.ragbackend.entity.Project;
 import com.vaidik.ragbackend.repository.DocumentRepository;
 import com.vaidik.ragbackend.repository.ProjectRepository;
+import com.vaidik.ragbackend.service.ChunkService;
 import com.vaidik.ragbackend.service.DocumentService;
 
 import jakarta.transaction.Transactional;
@@ -23,6 +24,7 @@ public class DocumentServiceImpl implements DocumentService {
 
     private final DocumentRepository documentRepository;
     private final ProjectRepository projectRepository;
+    private final ChunkService chunkService;
 
     @Override
     public Documents createDocument(
@@ -46,8 +48,15 @@ public class DocumentServiceImpl implements DocumentService {
         document.setContent(content);
         // document.setCreatedAt(createdAt);
         // document.setSizeInBytes(sizeInBytes);
+        
+         Documents savedDocument = documentRepository.save(document);
 
-        return documentRepository.save(document);
+        // 🔥 Phase 3 Integration (Chunking happens automatically)
+        chunkService.createChunks(savedDocument);
+
+        return savedDocument;
+
+        // return documentRepository.save(document);
     }
 
     @Override
