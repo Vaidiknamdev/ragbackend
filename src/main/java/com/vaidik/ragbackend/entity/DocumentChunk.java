@@ -22,13 +22,24 @@ public class DocumentChunk {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String chunkText;
 
+   @Lob
+   @Column(columnDefinition = "json")
+   private String embedding;
+
     // Constructors
     public DocumentChunk() {}
 
+    public DocumentChunk(Documents document, Integer chunkIndex, String chunkText,String embedding) {
+        this.document = document;
+        this.chunkIndex = chunkIndex;
+        this.chunkText = chunkText;
+        this.embedding = embedding;
+    }
     public DocumentChunk(Documents document, Integer chunkIndex, String chunkText) {
         this.document = document;
         this.chunkIndex = chunkIndex;
         this.chunkText = chunkText;
+        
     }
 
     // Getters and Setters
@@ -59,5 +70,13 @@ public class DocumentChunk {
 
     public void setChunkText(String chunkText) {
         this.chunkText = chunkText;
+    }
+
+    public String getEmbedding() {
+       return embedding;
+    }
+
+    public void setEmbedding(String embedding) {
+       this.embedding = embedding;
     }
 }
